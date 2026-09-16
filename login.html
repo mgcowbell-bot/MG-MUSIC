@@ -18,7 +18,7 @@
         <form id="loginForm" class="auth-form">
           <label>
             Email
-            <input id="email" type="email" required placeholder="admin@example.com" />
+            <input id="email" type="email" required value="mgcowbell@gmail.com" placeholder="admin@example.com" />
           </label>
 
           <label>
@@ -46,7 +46,7 @@
 
         document.getElementById('loginForm').addEventListener('submit', async (event) => {
           event.preventDefault();
-          const email = document.getElementById('email').value.trim();
+          const email = document.getElementById('email').value.trim() || 'mgcowbell@gmail.com';
           const password = document.getElementById('password').value;
 
           const result = await auth.login(email, password);
