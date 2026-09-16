@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>MG MUSIC Admin Login</title>
+    <link rel="stylesheet" href="css/style.css" />
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="js/config.js"></script>
+    <script src="js/auth.js"></script>
+  </head>
+  <body class="auth-page">
+    <main class="auth-shell">
+      <div class="auth-card">
+        <h1>MG MUSIC Admin</h1>
+        <p>Secure admin login</p>
+
+        <form id="loginForm" class="auth-form">
+          <label>
+            Email
+            <input id="email" type="email" required placeholder="admin@example.com" />
+          </label>
+
+          <label>
+            Password
+            <input id="password" type="password" required placeholder="Your password" />
+          </label>
+
+          <button type="submit" class="btn btn-primary btn-block">Login</button>
+        </form>
+
+        <div id="authMessage" class="message" aria-live="polite"></div>
+      </div>
+    </main>
+
+    <script>
+      document.addEventListener('DOMContentLoaded', async () => {
+        const auth = window.MGMusicAuth;
+        if (!auth) return;
+
+        const existing = await auth.getSession();
+        if (existing && existing.session) {
+          window.location.href = 'admin.html';
+          return;
+        }
+
+        document.getElementById('loginForm').addEventListener('submit', async (event) => {
+          event.preventDefault();
+          const email = document.getElementById('email').value.trim();
+          const password = document.getElementById('password').value;
+
+          const result = await auth.login(email, password);
+          if (result.success) {
+            window.location.href = 'admin.html';
+          } else {
+            const messageEl = document.getElementById('authMessage');
+            messageEl.textContent = result.message || 'Authentication failed.';
+            messageEl.classList.add('error');
+          }
+        });
+      });
+    </script>
+  </body>
+</html>

@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>MG MUSIC Admin</title>
+    <link rel="stylesheet" href="css/style.css" />
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="js/config.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/admin.js"></script>
+  </head>
+  <body data-page="admin">
+    <header class="site-header">
+      <div class="container nav">
+        <div class="brand">MG MUSIC Admin</div>
+        <div class="nav-links">
+          <a href="index.html">Public Site</a>
+          <button id="logoutBtn" type="button" class="btn btn-secondary">Logout</button>
+        </div>
+      </div>
+    </header>
+
+    <main class="container admin-layout">
+      <section class="admin-panel">
+        <h2>Dashboard</h2>
+        <div class="stats-grid">
+          <div class="stat-card">
+            <label>Total Songs</label>
+            <strong id="totalSongs">0</strong>
+          </div>
+          <div class="stat-card">
+            <label>Total Plays</label>
+            <strong id="totalPlays">0</strong>
+          </div>
+          <div class="stat-card">
+            <label>Total Downloads</label>
+            <strong id="totalDownloads">0</strong>
+          </div>
+          <div class="stat-card">
+            <label>Latest Uploads</label>
+            <strong id="latestUploads">0</strong>
+          </div>
+        </div>
+      </section>
+
+      <section class="admin-panel">
+        <h2>Upload Song</h2>
+        <form id="uploadForm" class="upload-form">
+          <div class="form-grid">
+            <label>
+              Song title
+              <input id="songTitle" type="text" required />
+            </label>
+            <label>
+              Artist
+              <input id="songArtist" type="text" required />
+            </label>
+            <label>
+              Album
+              <input id="songAlbum" type="text" />
+            </label>
+            <label>
+              Genre
+              <input id="songGenre" type="text" />
+            </label>
+          </div>
+
+          <label>
+            Description
+            <textarea id="songDescription" rows="4"></textarea>
+          </label>
+
+          <div class="file-row">
+            <label>
+              Cover image
+              <input id="coverFile" type="file" accept="image/*" />
+            </label>
+            <label>
+              MP3 file
+              <input id="audioFile" type="file" accept="audio/mpeg,audio/mp3,.mp3" required />
+            </label>
+          </div>
+
+          <div id="uploadProgress" class="progress-bar" aria-live="polite">
+            <div id="uploadProgressBar" class="progress-fill"></div>
+          </div>
+
+          <button type="submit" class="btn btn-primary btn-block">UPLOAD SONG</button>
+          <div id="uploadMessage" class="message" aria-live="polite"></div>
+        </form>
+      </section>
+
+      <section class="admin-panel">
+        <h2>All Uploaded Songs</h2>
+        <div id="adminSongList" class="admin-song-list"></div>
+      </section>
+    </main>
+
+    <div id="editSongModal" class="modal hidden" aria-hidden="true">
+      <div class="modal-card">
+        <h3>Edit Song</h3>
+        <form id="editForm">
+          <label>
+            Title
+            <input id="editTitle" type="text" />
+          </label>
+          <label>
+            Artist
+            <input id="editArtist" type="text" />
+          </label>
+          <label>
+            Album
+            <input id="editAlbum" type="text" />
+          </label>
+          <label>
+            Genre
+            <input id="editGenre" type="text" />
+          </label>
+          <label>
+            Description
+            <textarea id="editDescription" rows="4"></textarea>
+          </label>
+          <label>
+            Replace cover image
+            <input id="editCoverFile" type="file" accept="image/*" />
+          </label>
+
+          <div class="modal-actions">
+            <button type="button" class="btn btn-secondary" id="cancelEditBtn">Cancel</button>
+            <button type="submit" class="btn btn-primary">Save Changes</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <script>
+      document.addEventListener('DOMContentLoaded', async () => {
+        const auth = window.MGMusicAuth;
+        if (!auth) return;
+
+        const existing = await auth.getSession();
+        if (!existing || !existing.session) {
+          window.location.href = 'login.html';
+          return;
+        }
+
+        document.getElementById('logoutBtn').addEventListener('click', async () => {
+          const result = await auth.logout();
+          if (result.success) {
+            window.location.href = 'login.html';
+          } else {
+            window.showToast ? window.showToast(result.message || 'Logout failed.', 'error') : null;
+          }
+        });
+
+        if (window.MGMusicAdmin) {
+          window.MGMusicAdmin.init();
+        }
+      });
+    </script>
+  </body>
+</html>

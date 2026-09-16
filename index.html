@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>MG MUSIC</title>
+    <meta name="description" content="MG MUSIC streaming and downloads" />
+    <link rel="stylesheet" href="css/style.css" />
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="js/config.js"></script>
+    <script src="js/player.js"></script>
+    <script src="js/app.js"></script>
+  </head>
+  <body data-page="home">
+    <header class="site-header">
+      <div class="container nav">
+        <div class="brand">MG MUSIC</div>
+        <nav class="nav-links" aria-label="Main navigation">
+          <a href="#featured">Featured</a>
+          <a href="#latest">Latest</a>
+          <a href="#genres">Genres</a>
+          <a href="#all-music">All Music</a>
+        </nav>
+        <a class="btn btn-primary" href="admin.html">Admin</a>
+      </div>
+    </header>
+
+    <main class="container">
+      <section class="hero">
+        <div class="hero-copy">
+          <p class="eyebrow">Stream. Download. Discover.</p>
+          <h1>MG MUSIC</h1>
+          <p>Play real songs from the live Supabase database and storage.</p>
+        </div>
+
+        <div class="search-box">
+          <input id="searchInput" type="search" placeholder="Search by title, artist, album, or genre" />
+        </div>
+      </section>
+
+      <section id="featured" class="music-section">
+        <div class="section-header">
+          <h2>Featured</h2>
+        </div>
+        <div id="featuredGrid" class="song-grid"></div>
+      </section>
+
+      <section id="latest" class="music-section">
+        <div class="section-header">
+          <h2>Latest Songs</h2>
+        </div>
+        <div id="latestGrid" class="song-grid"></div>
+      </section>
+
+      <section id="popular" class="music-section">
+        <div class="section-header">
+          <h2>Popular</h2>
+        </div>
+        <div id="popularGrid" class="song-grid"></div>
+      </section>
+
+      <section id="genres" class="music-section">
+        <div class="section-header">
+          <h2>Genres</h2>
+        </div>
+        <div id="genreList" class="genre-list"></div>
+      </section>
+
+      <section id="all-music" class="music-section">
+        <div class="section-header">
+          <h2>All Music</h2>
+        </div>
+        <div id="allMusicGrid" class="song-grid"></div>
+      </section>
+    </main>
+
+    <aside class="player-panel" aria-label="Music player">
+      <div class="player-box">
+        <div class="now-playing">
+          <div class="cover-wrap">
+            <img id="playerCover" src="" alt="Now playing cover" />
+          </div>
+          <div class="track-meta">
+            <div id="playerTitle" class="track-title">No track selected</div>
+            <div id="playerArtist" class="track-artist">Select a song</div>
+          </div>
+        </div>
+
+        <div class="player-controls">
+          <div class="control-row top-controls">
+            <button id="shuffleBtn" class="icon-btn" type="button" title="Shuffle" aria-label="Shuffle">⤮</button>
+            <button id="prevBtn" class="icon-btn" type="button" title="Previous" aria-label="Previous">⏮</button>
+            <button id="playPauseBtn" class="play-btn" type="button" title="Play/Pause" aria-label="Play or pause">▶</button>
+            <button id="nextBtn" class="icon-btn" type="button" title="Next" aria-label="Next">⏭</button>
+            <button id="repeatBtn" class="icon-btn" type="button" title="Repeat" aria-label="Repeat">↻</button>
+          </div>
+
+          <div class="progress-wrap">
+            <span id="currentTime">0:00</span>
+            <input id="progress" type="range" min="0" max="100" value="0" aria-label="Song progress" />
+            <span id="duration">0:00</span>
+          </div>
+
+          <div class="volume-row">
+            <button id="muteBtn" type="button" aria-label="Mute">🔊</button>
+            <input id="volume" type="range" min="0" max="1" step="0.01" value="0.8" aria-label="Volume" />
+          </div>
+        </div>
+      </div>
+    </aside>
+
+    <script>
+      window.addEventListener('DOMContentLoaded', () => {
+        if (window.MGMusicPlayer) {
+          window.MGMusicPlayer.init();
+        }
+      });
+    </script>
+  </body>
+</html>
